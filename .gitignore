@@ -1,0 +1,20 @@
+# Ignore all files by default
+/*
+
+# Whitelist .gitignore
+!.gitignore
+
+# Whitelist README.md
+!README.md
+
+# Whitelist notebook
+!pertemuan6_data_cleaning_transformation.ipynb
+
+# Whitelist dataset
+!train.csv
+!test.csv
+!sample_submission.csv
+
+# Ignore temporary and checkpoint files
+.ipynb_checkpoints/
+*.bak
