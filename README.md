@@ -13,8 +13,14 @@ Dataset mentah memiliki berbagai tantangan nyata seperti *missing value* tinggi,
 ## 📂 Struktur File dan Folder
 
 ```text
-├── pertemuan6_data_cleaning_transformation.ipynb   # Notebook utama (Data Cleaning, EDA, Modeling)
-├── pertemuan6_data_cleaning_transformation.ipynb.bak # Cadangan (backup) notebook
+├── pertemuan6_data_cleaning_transformation.ipynb   # Notebook utama (Data Cleaning, EDA, Modeling, Export)
+├── app.py                                          # Frontend aplikasi web interaktif (Streamlit)
+├── train_and_export.py                             # Skrip otomatisasi pelatihan & ekspor model
+├── model.joblib                                    # Model Gradient Boosting Regressor (Joblib)
+├── model.pkl                                       # Model Gradient Boosting Regressor (Pickle)
+├── house_price_pipeline.joblib                     # Pipeline lengkap (Model + Scaler + Encoder + Meta)
+├── house_price_pipeline.pkl                        # Pipeline lengkap format Pickle
+├── requirements.txt                                # Daftar dependensi Python untuk deployment
 ├── train.csv                                       # Dataset latihan mentah (1.460 baris, 81 kolom)
 ├── test.csv                                        # Dataset pengujian (1.459 baris, 80 kolom)
 ├── sample_submission.csv                           # Format penyerahan prediksi kompetisi
@@ -154,3 +160,54 @@ Yasin, F., Firmansyah, M. R., Aldo, D., & Amrustian, M. A. (2025). Multivariate 
    - Eksperimen transformasi logaritmik $\log(1 + y)$ pada target `SalePrice`.
    - Feature engineering rasio ruangan gabungan (`TotalSF = 1stFlrSF + 2ndFlrSF + TotalBsmtSF`).
    - Menerapkan arsitektur *Stacking Regressor* (menggabungkan prediksi Ridge, Random Forest, dan Gradient Boosting).
+
+---
+
+## 🚀 Deployment & Frontend Interaktif (Streamlit Web App)
+
+Proyek ini telah dilengkapi dengan model yang diekspor ke format serialisasi standar industri (**Joblib** dan **Pickle**) serta aplikasi web frontend interaktif berbasis **Streamlit** untuk memfasilitasi pengujian inferensi harga rumah secara langsung.
+
+### 1. Struktur Artifact Model Serialisasi
+Model dan pipeline pendukung diekspor dalam 2 varian format:
+- `model.joblib` & `model.pkl`: Model estimator `GradientBoostingRegressor` murni hasil tuning.
+- `house_price_pipeline.joblib` & `house_price_pipeline.pkl`: Bundle komprehensif berisi model, objek `StandardScaler`, daftar `LabelEncoder`, konstanta pemulihan skala (`sp_mean`, `sp_scale`), nilai default median/mode, dan metrik performa.
+
+### 2. Cara Menjalankan Aplikasi Web Frontend
+Pastikan dependensi telah terpasang, lalu jalankan antarmuka Streamlit:
+
+```bash
+# 1. Instalasi dependensi
+pip install -r requirements.txt
+
+# 2. Jalankan aplikasi web
+streamlit run app.py
+```
+Aplikasi akan secara otomatis terbuka di peramban (browser) pada alamat `http://localhost:8501`.
+
+### 3. Fitur Utama Frontend Web:
+- **Preset Skenario Instan:** Pilihan cepat profil rumah (Mewah, Keluarga Nyaman, Minimalis, atau Kustom).
+- **Formulir Interaktif:** Kontrol slider dan input untuk 15+ parameter paling berpengaruh (`OverallQual`, `GrLivArea`, `GarageCars`, `YearBuilt`, `Neighborhood`, dll.).
+- **Kalkulasi Nilai Ganda:** Estimasi harga jual ditampilkan dalam satuan **USD ($)** dan konversi otomatis ke **Rupiah (IDR)** berdasarkan kurs yang dapat disesuaikan.
+- **Rentang Keyakinan (Error Margin):** Menampilkan batas estimasi atas dan bawah berdasarkan toleransi metrik MAE ($\pm \$11.870$).
+- **Visualisasi Feature Importance:** Grafik kontribusi fitur terhadap pembentukan harga pasar.
+
+### 4. Pelatihan Ulang & Ekspor Ulang Otomatis
+Untuk melatih ulang model dan memperbarui seluruh file artifact serialisasi secara otomatis:
+
+```bash
+python train_and_export.py
+```
+
+### 5. Contoh Pemanggilan Model via Python:
+```python
+import joblib
+
+# Memuat pipeline bundle
+pipeline = joblib.load("house_price_pipeline.joblib")
+model = pipeline["model"]
+sp_scale = pipeline["sp_scale"]
+sp_mean = pipeline["sp_mean"]
+
+# Prediksi data uji
+# y_pred_usd = model.predict(X_scaled) * sp_scale + sp_mean
+```

@@ -15,6 +15,19 @@
 !test.csv
 !sample_submission.csv
 
+# Whitelist exported model artifacts
+!*.joblib
+!*.pkl
+!models/
+!models/**
+
+# Whitelist application & scripts
+!app.py
+!train_and_export.py
+!requirements.txt
+
 # Ignore temporary and checkpoint files
 .ipynb_checkpoints/
 *.bak
+__pycache__/
+*.pyc
