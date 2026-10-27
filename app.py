@@ -1,10 +1,8 @@
 """
-====================================================================
-🏡 House Price Prediction AI - Ames Housing Dataset
-Aplikasi Web Frontend Interaktif Berbasis Streamlit
-Model: Gradient Boosting Regressor (Tuned) - R^2 = 89.15%
-Format Serialisasi: Joblib (.joblib) & Pickle (.pkl)
-====================================================================
+Ames Housing Price Prediction
+Aplikasi inferensi harga properti berbasis Streamlit.
+Model: Gradient Boosting Regressor (Tuned)
+Serialisasi: Joblib dan Pickle
 """
 
 import os
@@ -17,19 +15,17 @@ import streamlit as st
 import matplotlib.pyplot as plt
 
 # ------------------------------------------------------------------
-# 1. KONFIGURASI HALAMAN & TEMA STREAMLIT
+# 1. KONFIGURASI HALAMAN STREAMLIT
 # ------------------------------------------------------------------
 st.set_page_config(
-    page_title="House Price AI - Prediksi Harga Rumah",
-    page_icon="🏡",
+    page_title="Ames Housing Price Prediction",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling CSS untuk Antarmuka Modern & Premium
+# Custom Styling CSS Bersih dan Profesional
 st.markdown("""
 <style>
-    /* Google Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
     html, body, [class*="css"] {
@@ -37,73 +33,64 @@ st.markdown("""
     }
     
     .hero-container {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%);
-        border-radius: 16px;
-        padding: 32px;
-        color: white;
+        background: #0f172a;
+        border-radius: 12px;
+        padding: 24px 28px;
+        color: #ffffff;
         margin-bottom: 24px;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        border: 1px solid #1e293b;
     }
     
     .hero-title {
-        font-size: 2.2rem;
-        font-weight: 800;
-        margin-bottom: 8px;
-        letter-spacing: -0.02em;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+        letter-spacing: -0.01em;
+        color: #f8fafc;
     }
     
     .hero-subtitle {
-        font-size: 1.05rem;
-        color: #cbd5e1;
+        font-size: 0.95rem;
+        color: #94a3b8;
         font-weight: 400;
-        line-height: 1.5;
+        line-height: 1.4;
     }
     
     .badge-pill {
         display: inline-block;
-        padding: 4px 12px;
-        border-radius: 9999px;
-        font-size: 0.8rem;
+        padding: 3px 10px;
+        border-radius: 6px;
+        font-size: 0.78rem;
         font-weight: 600;
-        margin-right: 8px;
-        margin-top: 12px;
+        margin-right: 6px;
+        margin-top: 10px;
+        background: #1e293b;
+        color: #cbd5e1;
+        border: 1px solid #334155;
     }
-    
-    .badge-primary { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
-    .badge-success { background: rgba(52, 211, 153, 0.2); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.4); }
-    .badge-warning { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.4); }
 
     .result-card {
-        background: linear-gradient(145deg, #1e293b, #0f172a);
-        border: 2px solid #38bdf8;
-        border-radius: 16px;
+        background: #0f172a;
+        border: 1px solid #38bdf8;
+        border-radius: 12px;
         padding: 24px;
         text-align: center;
-        color: white;
-        box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
+        color: #ffffff;
         margin: 16px 0;
     }
     
     .price-usd {
-        font-size: 3rem;
+        font-size: 2.8rem;
         font-weight: 800;
         color: #38bdf8;
         margin: 4px 0;
     }
     
     .price-idr {
-        font-size: 1.35rem;
+        font-size: 1.25rem;
         font-weight: 600;
         color: #34d399;
         margin-bottom: 12px;
-    }
-    
-    .info-card {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 18px;
-        margin-bottom: 16px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -111,9 +98,9 @@ st.markdown("""
 # ------------------------------------------------------------------
 # 2. PEMUATAN MODEL & ARTIFACT (CACHED)
 # ------------------------------------------------------------------
-@st.cache_resource(show_spinner="Memuat model Machine Learning...")
+@st.cache_resource(show_spinner="Memuat pipeline model...")
 def load_pipeline():
-    """Mencari dan memuat pipeline dari file joblib atau pickle."""
+    """Memuat bundle pipeline dari file joblib atau pickle."""
     joblib_path = "house_price_pipeline.joblib"
     pickle_path = "house_price_pipeline.pkl"
     
@@ -138,28 +125,28 @@ def load_pipeline():
 bundle = load_pipeline()
 
 # ------------------------------------------------------------------
-# 3. HEADER & HERO SECTION
+# 3. HEADER
 # ------------------------------------------------------------------
 st.markdown("""
 <div class="hero-container">
-    <div class="hero-title">🏡 Ames Housing Price Prediction AI</div>
+    <div class="hero-title">Ames Housing Price Prediction</div>
     <div class="hero-subtitle">
-        Sistem estimasi nilai jual rumah cerdas berbasis algoritma <b>Gradient Boosting Regressor (Tuned)</b>.<br>
-        Dibangun melalui pipeline terstandardisasi: pembersihan missing value, eliminasi outlier (IQR), Z-Score scaling, dan Label Encoding.
+        Sistem inferensi nilai jual properti menggunakan algoritma Gradient Boosting Regressor terkalibrasi.<br>
+        Pipeline mencakup penanganan nilai hilang, eliminasi outlier (IQR), standardisasi Z-Score, dan Label Encoding.
     </div>
     <div>
-        <span class="badge-pill badge-primary">🎯 Test R² = 89.15%</span>
-        <span class="badge-pill badge-success">📉 Test MAE = ±$11,870 (7.73%)</span>
-        <span class="badge-pill badge-warning">📦 Serialisasi: Joblib & Pickle (.joblib, .pkl)</span>
+        <span class="badge-pill">Test R2 = 0.8915</span>
+        <span class="badge-pill">Test MAE = USD 11,870.68</span>
+        <span class="badge-pill">Test MAPE = 7.73%</span>
+        <span class="badge-pill">Format Serialisasi: Joblib & Pickle</span>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
 if bundle is None:
-    st.error("⚠️ Artifact pipeline model tidak ditemukan (`house_price_pipeline.joblib` atau `house_price_pipeline.pkl`). Silakan jalankan `python train_and_export.py` terlebih dahulu untuk melatih dan mengekspor model.")
+    st.error("Artifact pipeline tidak ditemukan (house_price_pipeline.joblib atau house_price_pipeline.pkl). Silakan jalankan 'python train_and_export.py' terlebih dahulu.")
     st.stop()
 
-# Ekstraksi komponen bundle
 model = bundle["model"]
 scaler = bundle["scaler"]
 scaler_idx = bundle["scaler_feature_indices"]
@@ -177,38 +164,35 @@ metrics = bundle["metrics"]
 # 4. SIDEBAR - PRESET & PENGATURAN KURS
 # ------------------------------------------------------------------
 with st.sidebar:
-    st.header("⚙️ Konfigurasi Cepat")
+    st.header("Pengaturan dan Preset")
     
-    st.subheader("📋 Preset Skenario Rumah")
     preset_choice = st.selectbox(
-        "Pilih Contoh Profil Rumah:",
+        "Pilih Profil Preset:",
         [
-            "Custom (Atur Manual)",
-            "🏰 Rumah Mewah (Luxury Estate)",
-            "🏡 Rumah Keluarga Nyaman (Mid-Range)",
-            "🏠 Rumah Minimalis / Starter Home"
+            "Kustom (Input Manual)",
+            "Tipe A (Luas dan Kualitas Tinggi)",
+            "Tipe B (Menengah / Standar Keluarga)",
+            "Tipe C (Kompak / Minimalis)"
         ],
         index=0
     )
     
-    # Pengaturan nilai berdasarkan preset
-    if preset_choice == "🏰 Rumah Mewah (Luxury Estate)":
+    if preset_choice == "Tipe A (Luas dan Kualitas Tinggi)":
         p_qual, p_cond, p_year, p_remod = 9, 7, 2010, 2015
         p_grliv, p_bsmt, p_garage_cars, p_garage_area = 2450, 1450, 3, 850
         p_bath, p_bed = 3, 4
         p_neigh, p_exter, p_kitchen, p_air = "NridgHt", "Gd", "Gd", "Y"
-    elif preset_choice == "🏡 Rumah Keluarga Nyaman (Mid-Range)":
+    elif preset_choice == "Tipe B (Menengah / Standar Keluarga)":
         p_qual, p_cond, p_year, p_remod = 7, 6, 2002, 2005
         p_grliv, p_bsmt, p_garage_cars, p_garage_area = 1750, 950, 2, 480
         p_bath, p_bed = 2, 3
         p_neigh, p_exter, p_kitchen, p_air = "CollgCr", "TA", "TA", "Y"
-    elif preset_choice == "🏠 Rumah Minimalis / Starter Home":
+    elif preset_choice == "Tipe C (Kompak / Minimalis)":
         p_qual, p_cond, p_year, p_remod = 5, 5, 1978, 1985
         p_grliv, p_bsmt, p_garage_cars, p_garage_area = 980, 650, 1, 280
         p_bath, p_bed = 1, 2
         p_neigh, p_exter, p_kitchen, p_air = "Edwards", "TA", "TA", "Y"
     else:
-        # Default custom
         p_qual = int(defaults_num.get("OverallQual", 6))
         p_cond = int(defaults_num.get("OverallCond", 5))
         p_year = int(defaults_num.get("YearBuilt", 1973))
@@ -225,9 +209,9 @@ with st.sidebar:
         p_air = defaults_cat.get("CentralAir", "Y")
 
     st.markdown("---")
-    st.subheader("💱 Konversi Mata Uang")
+    st.subheader("Konversi Mata Uang")
     kurs_usd_idr = st.number_input(
-        "Kurs USD ke IDR (Rp):",
+        "Kurs USD ke IDR:",
         min_value=10000,
         max_value=25000,
         value=16000,
@@ -235,42 +219,42 @@ with st.sidebar:
     )
 
     st.markdown("---")
-    st.caption(f"📁 **Artifact loaded:** `{bundle.get('_loaded_from', 'house_price_pipeline.joblib')}`")
-    st.caption("🏷️ Model: Gradient Boosting Regressor (150 Trees, Depth 3)")
+    st.caption(f"Artifact loaded: {bundle.get('_loaded_from', 'house_price_pipeline.joblib')}")
+    st.caption("Model: Gradient Boosting Regressor (150 trees, max_depth=3)")
 
 # ------------------------------------------------------------------
 # 5. TAB NAVIGASI UTAMA
 # ------------------------------------------------------------------
 tab_prediksi, tab_analisis, tab_info = st.tabs([
-    "🔮 Prediksi Harga Rumah",
-    "📊 Analisis & Feature Importance",
-    "ℹ️ Info Model & Penggunaan"
+    "Prediksi Harga Rumah",
+    "Analisis Fitur",
+    "Spesifikasi Model"
 ])
 
 # ==================================================================
-# TAB 1: FORMULIR PREDIKSI INTERAKTIF
+# TAB 1: FORMULIR PREDIKSI
 # ==================================================================
 with tab_prediksi:
-    st.subheader("📝 Masukkan Karakteristik & Spesifikasi Properti")
-    st.write("Sesuaikan parameter utama yang paling memengaruhi harga jual properti:")
+    st.subheader("Parameter Properti")
+    st.write("Masukkan nilai parameter spesifikasi bangunan di bawah ini:")
 
     col1, col2 = st.columns(2)
 
     with col1:
-        st.markdown("#### 🏗️ Kualitas Bangunan & Waktu")
-        input_qual = st.slider("⭐ Kualitas Material Keseluruhan (OverallQual):", 1, 10, p_qual, help="1 = Buruk Sekali, 10 = Sangat Mewah / Sempurna")
-        input_cond = st.slider("🛠️ Kondisi Fisik Rumah (OverallCond):", 1, 10, p_cond, help="Kondisi perawatan rumah saat ini")
+        st.markdown("**Kualitas Material dan Waktu Konstruksi**")
+        input_qual = st.slider("Kualitas Material Keseluruhan (OverallQual, skala 1-10):", 1, 10, p_qual)
+        input_cond = st.slider("Kondisi Fisik Bangunan (OverallCond, skala 1-10):", 1, 10, p_cond)
         
         c_yr1, c_yr2 = st.columns(2)
         with c_yr1:
-            input_year = st.number_input("📅 Tahun Dibangun (YearBuilt):", min_value=1870, max_value=2015, value=p_year)
+            input_year = st.number_input("Tahun Konstruksi (YearBuilt):", min_value=1870, max_value=2015, value=p_year)
         with c_yr2:
-            input_remod = st.number_input("🔨 Tahun Renovasi (YearRemodAdd):", min_value=1950, max_value=2015, value=p_remod)
+            input_remod = st.number_input("Tahun Renovasi (YearRemodAdd):", min_value=1950, max_value=2015, value=p_remod)
 
-        st.markdown("#### 📍 Lokasi & Kualitas Komponen")
+        st.markdown("**Lokasi dan Kualitas Komponen**")
         neigh_options = cat_options.get("Neighborhood", ["NAmes", "CollgCr", "OldTown", "Edwards", "Somerst", "NridgHt"])
         input_neigh = st.selectbox(
-            "🏘️ Kawasan / Lingkungan (Neighborhood):",
+            "Lingkungan / Kawasan (Neighborhood):",
             neigh_options,
             index=neigh_options.index(p_neigh) if p_neigh in neigh_options else 0
         )
@@ -278,49 +262,48 @@ with tab_prediksi:
         c_eq, c_kq = st.columns(2)
         with c_eq:
             exter_opts = cat_options.get("ExterQual", ["TA", "Gd", "Ex", "Fa"])
-            input_exter = st.selectbox("🧱 Kualitas Eksterior (ExterQual):", exter_opts, index=exter_opts.index(p_exter) if p_exter in exter_opts else 0)
+            input_exter = st.selectbox("Kualitas Eksterior (ExterQual):", exter_opts, index=exter_opts.index(p_exter) if p_exter in exter_opts else 0)
         with c_kq:
             kitchen_opts = cat_options.get("KitchenQual", ["TA", "Gd", "Ex", "Fa"])
-            input_kitchen = st.selectbox("🍳 Kualitas Dapur (KitchenQual):", kitchen_opts, index=kitchen_opts.index(p_kitchen) if p_kitchen in kitchen_opts else 0)
+            input_kitchen = st.selectbox("Kualitas Dapur (KitchenQual):", kitchen_opts, index=kitchen_opts.index(p_kitchen) if p_kitchen in kitchen_opts else 0)
 
         air_opts = cat_options.get("CentralAir", ["Y", "N"])
-        input_air = st.radio("❄️ AC Sentral (CentralAir):", air_opts, index=air_opts.index(p_air) if p_air in air_opts else 0, horizontal=True)
+        input_air = st.radio("Pendingin Udara Sentral (CentralAir):", air_opts, index=air_opts.index(p_air) if p_air in air_opts else 0, horizontal=True)
 
     with col2:
-        st.markdown("#### 📐 Dimensi & Luas Ruangan")
-        input_grliv = st.slider("🏠 Luas Tempat Tinggal di Atas Tanah (GrLivArea sqft):", 300, 3000, p_grliv, help="Luas lantai hunian di atas permukaan tanah (square feet)")
-        input_bsmt = st.slider("🕳️ Luas Ruang Bawah Tanah (TotalBsmtSF sqft):", 0, 2500, p_bsmt, help="Luas total basement (square feet)")
+        st.markdown("**Dimensi dan Luas Bangunan**")
+        input_grliv = st.slider("Luas Area Hunian di Atas Tanah (GrLivArea, sqft):", 300, 3000, p_grliv)
+        input_bsmt = st.slider("Luas Area Bawah Tanah (TotalBsmtSF, sqft):", 0, 2500, p_bsmt)
 
         c_gar1, c_gar2 = st.columns(2)
         with c_gar1:
-            input_garage_cars = st.slider("🚗 Kapasitas Garasi Mobil (GarageCars):", 0, 4, p_garage_cars)
+            input_garage_cars = st.slider("Kapasitas Garasi Mobil (GarageCars):", 0, 4, p_garage_cars)
         with c_gar2:
-            input_garage_area = st.number_input("🚘 Luas Garasi (GarageArea sqft):", min_value=0, max_value=1400, value=p_garage_area)
+            input_garage_area = st.number_input("Luas Garasi (GarageArea, sqft):", min_value=0, max_value=1400, value=p_garage_area)
 
-        st.markdown("#### 🛏️ Kamar & Sanitasi")
+        st.markdown("**Fasilitas Ruangan**")
         c_b1, c_b2 = st.columns(2)
         with c_b1:
-            input_bath = st.slider("🚿 Kamar Mandi Lengkap (FullBath):", 0, 4, p_bath)
+            input_bath = st.slider("Kamar Mandi Lengkap (FullBath):", 0, 4, p_bath)
         with c_b2:
-            input_bed = st.slider("🛏️ Kamar Tidur di Atas Tanah (BedroomAbvGr):", 0, 6, p_bed)
+            input_bed = st.slider("Kamar Tidur di Atas Tanah (BedroomAbvGr):", 0, 6, p_bed)
 
-        input_fireplaces = st.slider("🔥 Jumlah Perapian (Fireplaces):", 0, 3, int(defaults_num.get("Fireplaces", 1)))
+        input_fireplaces = st.slider("Jumlah Perapian (Fireplaces):", 0, 3, int(defaults_num.get("Fireplaces", 1)))
 
-    # Accordion Fitur Tambahan Opsional
-    with st.expander("🛠️ Pengaturan Fitur Tambahan & Detail Lainnya (Opsional)"):
-        st.caption("Nilai berikut secara otomatis diisi oleh median dan modus dataset hasil cleaning.")
+    with st.expander("Fitur Tambahan dan Detail Sekunder"):
+        st.caption("Fitur berikut diisi secara default berdasarkan nilai median dan modus data latihan.")
         c_sub1, c_sub2, c_sub3 = st.columns(3)
         with c_sub1:
-            input_lotarea = st.number_input("Luas Tanah (LotArea sqft):", min_value=1000, max_value=50000, value=int(defaults_num.get("LotArea", 9500)))
+            input_lotarea = st.number_input("Luas Lahan (LotArea, sqft):", min_value=1000, max_value=50000, value=int(defaults_num.get("LotArea", 9500)))
             bldg_opts = cat_options.get("BldgType", ["1Fam", "TwnhsE", "Duplex", "Twnhs", "2fmCon"])
             input_bldg = st.selectbox("Tipe Bangunan (BldgType):", bldg_opts)
         with c_sub2:
             style_opts = cat_options.get("HouseStyle", ["1Story", "2Story", "1.5Fin", "SLvl", "SFoyer"])
-            input_style = st.selectbox("Gaya Rumah (HouseStyle):", style_opts)
+            input_style = st.selectbox("Model Arsitektur (HouseStyle):", style_opts)
             input_totrms = st.slider("Total Ruangan di Atas Tanah (TotRmsAbvGrd):", 2, 14, int(defaults_num.get("TotRmsAbvGrd", 6)))
         with c_sub3:
             found_opts = cat_options.get("Foundation", ["PConc", "CBlock", "BrkTil", "Slab"])
-            input_foundation = st.selectbox("Jenis Pondasi (Foundation):", found_opts)
+            input_foundation = st.selectbox("Tipe Pondasi (Foundation):", found_opts)
             heat_opts = cat_options.get("HeatingQC", ["Ex", "TA", "Gd", "Fa"])
             input_heatingqc = st.selectbox("Kualitas Pemanas (HeatingQC):", heat_opts)
 
@@ -329,12 +312,9 @@ with tab_prediksi:
     # --------------------------------------------------------------
     # EKSEKUSI PREDIKSI
     # --------------------------------------------------------------
-    btn_predict = st.button("🔮 Hitung Estimasi Harga Rumah", type="primary", use_container_width=True)
+    btn_predict = st.button("Hitung Estimasi Harga", type="primary", use_container_width=True)
 
-    # Inisialisasi dictionary fitur lengkap
     current_features = {}
-    
-    # 1. Isi semua dengan nilai default
     for col in feature_names:
         if col in defaults_num:
             current_features[col] = float(defaults_num[col])
@@ -343,7 +323,6 @@ with tab_prediksi:
         else:
             current_features[col] = 0.0
 
-    # 2. Timpa dengan nilai input dari form
     current_features["OverallQual"] = float(input_qual)
     current_features["OverallCond"] = float(input_cond)
     current_features["YearBuilt"] = float(input_year)
@@ -366,13 +345,11 @@ with tab_prediksi:
     current_features["Foundation"] = str(input_foundation)
     current_features["HeatingQC"] = str(input_heatingqc)
 
-    # Transformasi Fitur Sesuai StandardScaler & LabelEncoder
     processed_row = {}
     for col in feature_names:
         if col in defaults_num and col in scaler_idx:
             val = float(current_features[col])
             idx = scaler_idx[col]
-            # Z-Score Standardisasi: (x - mean) / scale
             val_scaled = (val - scaler.mean_[idx]) / scaler.scale_[idx]
             processed_row[col] = val_scaled
         elif col in defaults_cat and col in encoders:
@@ -385,49 +362,44 @@ with tab_prediksi:
         else:
             processed_row[col] = 0.0
 
-    # Prediksi Model
     df_input = pd.DataFrame([processed_row])[feature_names]
     pred_standardized = float(model.predict(df_input)[0])
-    # Rekonstruksi ke Dollar Asli ($ USD)
     predicted_usd = (pred_standardized * sp_scale) + sp_mean
     predicted_idr = predicted_usd * kurs_usd_idr
 
-    # Margin Error MAE ($11,870)
     mae_margin = float(metrics.get("mae_usd", 11870.68))
     low_usd = max(0, predicted_usd - mae_margin)
     high_usd = predicted_usd + mae_margin
     low_idr = low_usd * kurs_usd_idr
     high_idr = high_usd * kurs_usd_idr
 
-    # Kategori Properti
     if predicted_usd >= 280000:
-        tier_label = "🏰 Properti Mewah (Luxury Tier)"
+        tier_label = "Kategori: Properti Mewah"
         tier_color = "#38bdf8"
     elif predicted_usd >= 180000:
-        tier_label = "🏡 Properti Menengah Atas (Upper Mid-Tier)"
+        tier_label = "Kategori: Properti Menengah Atas"
         tier_color = "#34d399"
     elif predicted_usd >= 130000:
-        tier_label = "🏠 Properti Residensial Standar (Standard Family Home)"
+        tier_label = "Kategori: Properti Menengah Standar"
         tier_color = "#fbbf24"
     else:
-        tier_label = "🏷️ Properti Ekonomis / Starter (Budget Tier)"
+        tier_label = "Kategori: Properti Ekonomis"
         tier_color = "#f87171"
 
-    # Tampilkan Hasil Prediksi
     st.markdown(f"""
     <div class="result-card">
-        <div style="font-size: 1rem; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; font-weight: 600;">
-            ESTIMASI NILAI JUAL RUMAH (PREDICTED SALE PRICE)
+        <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; font-weight: 600;">
+            ESTIMASI NILAI JUAL RUMAH
         </div>
         <div class="price-usd">${predicted_usd:,.2f}</div>
-        <div class="price-idr">≈ Rp {predicted_idr:,.0f} IDR</div>
-        <div style="margin-top: 12px; font-size: 0.95rem; color: #cbd5e1;">
-            <b>Rentang Keyakinan Model (± MAE ${mae_margin:,.2f}):</b><br>
-            <span style="color: #38bdf8;">${low_usd:,.2f}</span> &nbsp;—&nbsp; <span style="color: #38bdf8;">${high_usd:,.2f}</span><br>
-            <small style="color: #94a3b8;">(Rp {low_idr:,.0f} — Rp {high_idr:,.0f})</small>
+        <div class="price-idr">Rp {predicted_idr:,.0f}</div>
+        <div style="margin-top: 10px; font-size: 0.9rem; color: #cbd5e1;">
+            <b>Rentang Estimasi (Toleransi Test MAE ${mae_margin:,.2f}):</b><br>
+            ${low_usd:,.2f} — ${high_usd:,.2f}<br>
+            <span style="color: #94a3b8;">(Rp {low_idr:,.0f} — Rp {high_idr:,.0f})</span>
         </div>
-        <div style="margin-top: 16px;">
-            <span style="background: rgba(255,255,255,0.1); border: 1px solid {tier_color}; color: {tier_color}; padding: 6px 16px; border-radius: 999px; font-weight: 600; font-size: 0.85rem;">
+        <div style="margin-top: 14px;">
+            <span style="border: 1px solid {tier_color}; color: {tier_color}; padding: 4px 14px; border-radius: 6px; font-weight: 600; font-size: 0.8rem;">
                 {tier_label}
             </span>
         </div>
@@ -438,8 +410,8 @@ with tab_prediksi:
 # TAB 2: ANALISIS KEPENTINGAN FITUR
 # ==================================================================
 with tab_analisis:
-    st.subheader("📊 Analisis Kepentingan Fitur (Feature Importance)")
-    st.write("Visualisasi faktor-faktor fisik dan lokasi properti yang paling dominan memengaruhi harga pasar:")
+    st.subheader("Analisis Kepentingan Fitur (Feature Importance)")
+    st.write("Kontribusi relatif 15 fitur utama terhadap prediksi harga rumah pada model Gradient Boosting:")
 
     df_imp = pd.DataFrame(top_features_list)
 
@@ -448,11 +420,11 @@ with tab_analisis:
     ax.set_facecolor('#1e293b')
 
     bars = ax.barh(df_imp["feature"][::-1], df_imp["importance"][::-1], color="#38bdf8", height=0.65)
-    ax.bar_label(bars, fmt="%.3f", padding=5, color="white", fontsize=9, fontweight="bold")
+    ax.bar_label(bars, fmt="%.3f", padding=5, color="white", fontsize=9)
 
-    ax.set_title("Top 15 Fitur Paling Berpengaruh Terhadap SalePrice", color="white", fontsize=12, fontweight="bold", pad=12)
-    ax.set_xlabel("Tingkat Kontribusi Relatif (Feature Importance)", color="#94a3b8", fontsize=10)
-    ax.tick_params(colors="#cbd5e1")
+    ax.set_title("15 Fitur Paling Berpengaruh Terhadap SalePrice", color="white", fontsize=11, fontweight="bold", pad=12)
+    ax.set_xlabel("Bobot Kepentingan Relatif", color="#94a3b8", fontsize=9)
+    ax.tick_params(colors="#cbd5e1", labelsize=9)
     ax.spines['bottom'].set_color('#334155')
     ax.spines['left'].set_color('#334155')
     ax.spines['top'].set_visible(False)
@@ -463,23 +435,23 @@ with tab_analisis:
     st.pyplot(fig)
 
     st.markdown("""
-    ### 💡 Ringkasan Temuan Ekonomi & Properti:
-    1. **Kualitas Material (`OverallQual`):** Menjadi penentu tunggal nomor satu. Rumah dengan material konstruksi grade 8-10 memiliki lonjakan nilai pasar eksponensial.
-    2. **Luas Hunian (`GrLivArea`):** Setiap penambahan luas ruang hunian di atas tanah secara linier meningkatkan valuasi rumah.
-    3. **Ruang Bawah Tanah (`TotalBsmtSF`):** Basement yang luas di wilayah Iowa berfungsi sebagai ruang proteksi cuaca ekstrem sekaligus area rekreasi keluarga.
-    4. **Fasilitas Garasi (`GarageCars` & `GarageArea`):** Kapasitas garasi untuk 2–3 mobil merupakan syarat standar bagi pembeli kelas menengah ke atas.
-    5. **Usia Bangunan (`YearBuilt`):** Bangunan modern yang dibangun setelah tahun 2000 memiliki nilai depresiasi jauh lebih rendah dan efisiensi termal lebih baik.
+    **Catatan Analisis:**
+    1. **OverallQual:** Kualitas material dan pengerjaan konstruksi secara konsisten menjadi prediktor dengan bobot tertinggi.
+    2. **GrLivArea:** Luas area tempat tinggal di atas tanah memiliki korelasi linier positif terkuat terhadap harga.
+    3. **TotalBsmtSF:** Luas ruang bawah tanah memberikan kontribusi signifikan terhadap estimasi nilai properti.
+    4. **GarageCars dan GarageArea:** Kapasitas fasilitas garasi kendaraan menjadi indikator kelas segmen hunian.
+    5. **YearBuilt:** Usia bangunan merefleksikan tingkat depresiasi fisik dan standar arsitektur.
     """)
 
 # ==================================================================
-# TAB 3: INFORMASI MODEL & PENGGUNAAN JOBLIB / PICKLE
+# TAB 3: SPESIFIKASI MODEL
 # ==================================================================
 with tab_info:
-    st.subheader("ℹ️ Spesifikasi Model Machine Learning")
+    st.subheader("Spesifikasi Model dan Evaluasi Kinerja")
     
     col_m1, col_m2, col_m3, col_m4 = st.columns(4)
     with col_m1:
-        st.metric("Test R² Score", f"{metrics.get('r2', 0.8915):.4f}", "+0.8915 vs Baseline")
+        st.metric("Test R2", f"{metrics.get('r2', 0.8915):.4f}")
     with col_m2:
         st.metric("Test RMSE", f"${metrics.get('rmse_usd', 16299.45):,.2f}")
     with col_m3:
@@ -488,18 +460,18 @@ with tab_info:
         st.metric("Test MAPE", f"{metrics.get('mape', 7.73):.2f}%")
 
     st.markdown("---")
-    st.subheader("📦 Cara Menggunakan Artifact Joblib dan Pickle")
-    st.write("Model telah diekspor ke format serialisasi standar Python. Anda dapat memuatnya dalam skrip Python atau API eksternal:")
+    st.subheader("Pemuatan Model (Joblib dan Pickle)")
+    st.write("Contoh sintaks pemuatan file artifact serialisasi pada lingkungan Python:")
 
-    code_snippet = """# 1. Menggunakan JOBLIB
+    code_snippet = """# 1. Pemuatan menggunakan Joblib
 import joblib
 
-# Muat model regressor langsung
+# Muat estimator
 model = joblib.load('model.joblib')
-# Atau muat bundle lengkap (termasuk scaler & encoder)
+# Atau muat pipeline bundle lengkap
 pipeline = joblib.load('house_price_pipeline.joblib')
 
-# 2. Menggunakan PICKLE
+# 2. Pemuatan menggunakan Pickle
 import pickle
 
 with open('model.pkl', 'rb') as f:
@@ -508,8 +480,8 @@ with open('model.pkl', 'rb') as f:
 with open('house_price_pipeline.pkl', 'rb') as f:
     pipeline_pickle = pickle.load(f)
 
-# Prediksi menggunakan pipeline
-scaled_features = ... # 75 fitur yang telah distandardisasi
+# Prediksi menggunakan pipeline bundle
+scaled_features = ...  # Matriks 75 fitur yang telah distandardisasi
 y_norm = pipeline['model'].predict(scaled_features)
 sale_price_usd = y_norm * pipeline['sp_scale'] + pipeline['sp_mean']
 print(f"Hasil Prediksi: ${sale_price_usd[0]:,.2f}")
@@ -517,18 +489,15 @@ print(f"Hasil Prediksi: ${sale_price_usd[0]:,.2f}")
     st.code(code_snippet, language="python")
 
     st.markdown("---")
-    st.subheader("📑 Alur Pipeline Pra-Pemrosesan")
+    st.subheader("Tahapan Pipeline Preprocessing")
     st.markdown("""
-    1. **Imputasi Missing Values:** Fitur numerik diimputasi dengan median, fitur kategorikal dengan modus.
-    2. **Eliminasi Fitur Kosong (>75%):** Kolom `Alley`, `PoolQC`, `Fence`, dan `MiscFeature` dihapus.
-    3. **Pembersihan Outlier (IQR):** Menghapus data ekstrem dengan batas $1.5 \\times \\text{IQR}$, menyaring dataset menjadi 557 baris bersih.
-    4. **Standardisasi Fitur Numerik:** Menggunakan `StandardScaler` (Z-Score: mean $\\approx 0$, std $\\approx 1$).
-    5. **Encoding Fitur Kategorikal:** Menggunakan `LabelEncoder` pada 39 kolom kategorik.
-    6. **Split Latih/Uji:** 80% Latih (445 sampel) dan 20% Uji (112 sampel).
+    1. **Imputasi Missing Values:** Median untuk fitur numerik, modus untuk fitur kategorikal.
+    2. **Eliminasi Fitur Kosong (>75%):** Kolom Alley, PoolQC, Fence, dan MiscFeature dieliminasi.
+    3. **Pembersihan Outlier (IQR):** Baris data di luar batas 1.5 * IQR pada kolom numerik dihapus (557 baris tersisa).
+    4. **Standardisasi:** StandardScaler diterapkan pada seluruh fitur numerik.
+    5. **Encoding Fitur Kategorikal:** LabelEncoder diterapkan pada 39 fitur kategorik.
+    6. **Split Latih dan Uji:** Pembagian data dengan proporsi 80% Latih dan 20% Uji (random_state=1).
     """)
 
-# ------------------------------------------------------------------
-# 6. DUAL RUNNER (STREAMLIT / PYTHON CLI)
-# ------------------------------------------------------------------
 if __name__ == "__main__":
     pass

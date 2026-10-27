@@ -3,14 +3,14 @@
 
 ---
 
-## 📌 Ringkasan Proyek
+## Ringkasan Proyek
 Proyek ini merupakan dokumentasi komprehensif dari proses belajar kami dalam membangun pipeline *machine learning* regresi dari tahap data mentah (*raw data*) hingga siap produksi (*production-ready*). Studi kasus yang diangkat adalah memprediksi harga jual properti/rumah (`SalePrice`) berdasarkan karakteristik fisik, fasilitas, dan lokasi bangunan menggunakan **Ames Housing Dataset**.
 
 Dataset mentah memiliki berbagai tantangan nyata seperti *missing value* tinggi, *outlier* ekstrem, perbedaan skala fitur numerik, serta fitur kategorikal yang kompleks. Kami mendemonstrasikan bagaimana teknik preprocessing yang tepat secara langsung meningkatkan performa generalisasi model machine learning.
 
 ---
 
-## 📂 Struktur File dan Folder
+## Struktur File dan Folder
 
 ```text
 ├── pertemuan6_data_cleaning_transformation.ipynb   # Notebook utama (Data Cleaning, EDA, Modeling, Export)
@@ -29,7 +29,7 @@ Dataset mentah memiliki berbagai tantangan nyata seperti *missing value* tinggi,
 
 ---
 
-## 🔄 Tahapan Alur Kerja (Pipeline Workflow)
+## Tahapan Alur Kerja (Pipeline Workflow)
 
 Pipeline pengolahan data dan pemodelan pada proyek ini dibagi menjadi 15 tahapan terstruktur:
 
@@ -91,7 +91,7 @@ Menguji 7 algoritma dengan paradigma berbeda:
 
 ---
 
-## 📊 Hasil Evaluasi Model
+## Hasil Evaluasi Model
 
 ### 1. Komparasi Kinerja pada Data Uji (Skala Terstandardisasi & Satuan Asli $ USD)
 
@@ -120,7 +120,7 @@ Melalui pencarian grid pada hyperparameter:
 
 ---
 
-## 📚 Rujukan Ilmiah: Interpretasi Metrik Evaluasi ($R^2$, RMSE, MAE)
+## Rujukan Ilmiah: Interpretasi Metrik Evaluasi ($R^2$, RMSE, MAE)
 
 Dalam mengevaluasi performa model regresi pada proyek ini, interpretasi metrik didasarkan pada landasan literatur ilmiah berikut:
 
@@ -143,7 +143,7 @@ Yasin, F., Firmansyah, M. R., Aldo, D., & Amrustian, M. A. (2025). Multivariate 
 
 ---
 
-## 💡 Temuan Utama & Kesimpulan Proyek
+## Temuan Utama & Kesimpulan Proyek
 
 1. **Efektivitas Data Preprocessing:**  
    Pembersihan missing value terarah, eliminasi outlier dengan IQR, dan standardisasi fitur berkontribusi langsung menaikkan $R^2$ model linier dan ensemble ke rentang $0.88 - 0.89$.
@@ -163,7 +163,7 @@ Yasin, F., Firmansyah, M. R., Aldo, D., & Amrustian, M. A. (2025). Multivariate 
 
 ---
 
-## 🚀 Deployment & Frontend Interaktif (Streamlit Web App)
+## Deployment & Frontend Interaktif (Streamlit Web App)
 
 Proyek ini telah dilengkapi dengan model yang diekspor ke format serialisasi standar industri (**Joblib** dan **Pickle**) serta aplikasi web frontend interaktif berbasis **Streamlit** untuk memfasilitasi pengujian inferensi harga rumah secara langsung.
 
