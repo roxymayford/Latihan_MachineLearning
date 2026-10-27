@@ -125,16 +125,23 @@ Melalui pencarian grid pada hyperparameter:
 Dalam mengevaluasi performa model regresi pada proyek ini, interpretasi metrik didasarkan pada landasan literatur ilmiah berikut:
 
 > **Prinsip Utama:**  
-> Semakin mendekati **1 nilai $R^2$**, serta semakin mendekati **0 nilai RMSE dan MAE**, menunjukkan kinerja model yang semakin baik (*Chicco et al., 2021; Yasin et al., 2025*).
+> Semakin mendekati **1 nilai $R^2$**, serta semakin mendekati **0 nilai RMSE dan MAE**, menunjukkan kinerja model yang semakin baik (*Chicco et al., 2021; Yasin et al., 2025; Zarbakhsh et al., 2024*).
 
-### 1. Publikasi Internasional (Scopus Q1)
+### 1. Publikasi Internasional (Scopus Q1) - Landasan Teori Evaluasi Metrik
 **Sitasi:**  
 Chicco, D., Warrens, M. J., & Jurman, G. (2021). The coefficient of determination R-squared is more informative than SMAPE, MAE, MAPE, MSE and RMSE in regression analysis evaluation. *PeerJ Computer Science, 7*, e623. [https://doi.org/10.7717/peerj-cs.623](https://doi.org/10.7717/peerj-cs.623)
 - **$R^2$ (Koefisien Determinasi):** Rentang nilai dari $-\infty$ (terburuk) hingga $+1$ (kecocokan sempurna). Nilai 1 berarti model mampu memprediksi target dengan presisi tanpa kesalahan.
 - **RMSE & MAE:** Rentang nilai dari $0$ (sempurna tanpa error) hingga $+\infty$ (terburuk). Nilai yang makin besar menunjukkan model yang semakin meleset.
 - **Catatan Penting:** Besaran mutlak MAE atau RMSE harus selalu dievaluasi terhadap skala data aslinya. Oleh karena itu, kami menyajikan metrik dalam skala terstandardisasi maupun dalam nilai mata uang riil ($ USD) dan persentase relatif (MAPE).
 
-### 2. Publikasi Nasional (SINTA 2)
+### 2. Publikasi Internasional (Scopus Q1) - Komparasi Kinerja Model Ensemble
+**Sitasi:**  
+Zarbakhsh, S., Shahsavar, A. R., & Soltani, M. (2024). Optimizing PGRs for in vitro shoot proliferation of pomegranate with bayesian-tuned ensemble stacking regression and NSGA-II: A comparative evaluation of machine learning models. *Plant Methods, 20*, Article 82. [https://doi.org/10.1186/s13007-024-01211-5](https://doi.org/10.1186/s13007-024-01211-5)
+- **$R^2$ (Koefisien Determinasi):** Semakin dekat nilai $R^2$ ke 1, semakin baik kapasitas model dalam menerangkan variabilitas data.
+- **RMSE & MAE:** Nilai metrik yang semakin rendah merefleksikan performa prediksi yang lebih akurat.
+- **Kriteria Model Terbaik:** Model terbaik ditentukan oleh kombinasi nilai $R^2$ yang lebih tinggi serta nilai metrik error (RMSE, MAE, dan MAPE) yang lebih kecil pada data latih maupun data uji.
+
+### 3. Publikasi Nasional (SINTA 2) - Evaluasi Pemodelan Prediksi
 **Sitasi:**  
 Yasin, F., Firmansyah, M. R., Aldo, D., & Amrustian, M. A. (2025). Multivariate forecasting of paddy production: A comparative study of machine learning models. *Jurnal Teknik Informatika (JUTIF), 6*(3), 1431–1442. [https://doi.org/10.52436/1.jutif.2025.6.3.4681](https://doi.org/10.52436/1.jutif.2025.6.3.4681)
 - **MAE:** Semakin rendah nilai MAE, semakin baik akurasi estimasi model.
@@ -142,6 +149,7 @@ Yasin, F., Firmansyah, M. R., Aldo, D., & Amrustian, M. A. (2025). Multivariate 
 - **$R^2$:** Mengukur proporsi variabilitas target yang berhasil diterangkan oleh kombinasi fitur prediktor.
 
 ---
+
 
 ## Temuan Utama & Kesimpulan Proyek
 
